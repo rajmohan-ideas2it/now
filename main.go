@@ -22,6 +22,17 @@ func New(t time.Time) *Now {
 	return &Now{t}
 }
 
+const (
+		Anyday time.Weekday = -1 + iota
+        Sunday 
+        Monday
+        Tuesday
+        Wednesday
+        Thursday
+        Friday
+        Saturday
+)
+
 func BeginningOfMinute() time.Time {
 	return New(time.Now()).BeginningOfMinute()
 }
@@ -78,13 +89,13 @@ func EndOfYear() time.Time {
 	return New(time.Now()).EndOfYear()
 }
 
-func Monday() time.Time {
+/*func Monday() time.Time {
 	return New(time.Now()).Monday()
 }
 
 func Sunday() time.Time {
 	return New(time.Now()).Sunday()
-}
+}*/
 
 func EndOfSunday() time.Time {
 	return New(time.Now()).EndOfSunday()

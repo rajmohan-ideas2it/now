@@ -180,3 +180,35 @@ func (now *Now) Between(time1, time2 string) bool {
 	restime2 := now.MustParse(time2)
 	return now.After(restime) && now.Before(restime2)
 }
+
+func (now *Now) GetCrawlereDateWithTime(hour int, minute int, day int) time.Time {
+	t := now.Time
+	crawlTime := time.Date(t.Year(), t.Month(), t.Day(), hour, minute, 0, 0, t.Location()) 
+	weekday := int(crawlTime.Weekday())
+
+	if day < 0 {
+		if ( hour >= t.Hour()) && (minute >= t.Minute()) {
+			return crawlTime
+		} else {
+			return crawlTime.Add(24*time.Hour)
+		}
+	} else if weekday == day {
+		if ( hour >= t.Hour()) && (minute >= t.Minute()) {
+			return crawlTime
+		} else {
+			d := getDuration(day, weekday)
+			return crawlTime.Add(d)
+		}
+	} else {
+		d := getDuration(day, weekday)
+		return crawlTime.Add(d)
+	}
+}
+
+func getDuration(day int, weekday int) time.Duration{
+	if day <= weekday {
+		return time.Duration(7 + (day-weekday)) * 24 * time.Hour
+	} else {
+		return time.Duration(day-weekday) * 24 * time.Hour
+	}
+}
